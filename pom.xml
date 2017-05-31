@@ -12,12 +12,12 @@
       <repository>
         <id>nexus</id>
         <name>MyCo Internal Repository</name>
-        <url>http://localhost:8081/nexus/content/repositories/releases/</url>
+        <url>http://192.168.33.100:8081/nexus/content/repositories/releases/</url>
       </repository>
       <snapshotRepository>
         <id>nexus</id>
         <name>MyCo Internal Repository</name>
-        <url>http://localhost:8081/nexus/content/repositories/releases/</url>
+        <url>http://192.168.33.100:8081/nexus/content/repositories/releases/</url>
       </snapshotRepository>
   </distributionManagement>
 
@@ -69,7 +69,7 @@
 						<directory>/tmp/${project.artifactId}</directory>
 			  	                <sources>
 							<source>
-						                <location>/tmp/maven/test/target/checkout</location>
+						                <location>target/checkout</location>
                 					</source>	
 	      					</sources>
             				</mapping>
