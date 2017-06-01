@@ -45,10 +45,6 @@ Vagrant.configure("2") do |config|
 	sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
 	sudo yum install -y apache-maven 
    SHELL
-    t.vm.provision "puppet" do |puppet|
-	puppet.manifest_path = "manifests"
-	puppet.manifest_file = "work.pp"
-    end
     t.vm.network "private_network", ip: "192.168.33.100"
     t.vm.provider :libvirt do |vm|
         vm.memory = 1000
@@ -64,16 +60,6 @@ Vagrant.configure("2") do |config|
         yes | yum -y install puppet
         hostname test
         echo domain mynode.com >> /etc/resolv.conf
-        yum install -y java-1.8.0-openjdk-devel
-        yum install -y nano
-        yum group install -y "Development Tools"
-        yum install -y curl-devel expat-devel gettext-devel openssl-devel zlib-devel
-        yum install -y git
-        yum install -y wget
-	sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O \
- 	/etc/yum.repos.d/epel-apache-maven.repo
-        sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
-        sudo yum install -y apache-maven
    SHELL
     t.vm.provision "puppet" do |puppet|
         puppet.manifest_file = "work.pp"
