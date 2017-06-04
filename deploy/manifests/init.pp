@@ -5,7 +5,6 @@
 class deploy (
   $cwd = $deploy::params::cwd,
   $settings_path = $deploy::params::settings_path
-  $node_name = $deploy::params::node_name
 
 ) inherits deploy::params {
 
