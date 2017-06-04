@@ -1,0 +1,17 @@
+{
+  "name": "Puppet-deploy_nexus",
+  "version": "0.1.0",
+  "author": "Puppet",
+  "summary": null,
+  "license": "Apache-2.0",
+  "source": "",
+  "project_page": null,
+  "issues_url": null,
+  "dependencies": [
+    {"name": "puppetlabs/stdlib", "version_requirement": ">= 1.0.0" },
+    {"name": "puppetlabs/java", "version_requirement": ">= 2.0.0" },
+    {"name": "hubspot/nexus", "version_requirement": ">= 1.7.1" }
+  ],
+  "data_provider": null
+}
+

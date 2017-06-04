@@ -5,6 +5,7 @@
 class deploy (
   $cwd = $deploy::params::cwd,
   $settings_path = $deploy::params::settings_path
+  $node_name = $deploy::params::node_name
 
 ) inherits deploy::params {
 
@@ -42,18 +43,18 @@ class deploy (
       before => Package['apache-maven'],
     }
 
-
     exec { 'repo-maven':
-      command => 'sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo',
+      command => 'wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo',
       path    => ['/usr/local/bin', '/usr/bin', '/usr/local/sbin', '/usr/sbin', '/home/vagrant/.local/bin', '/home/vagrant/bin'],
+      user    => root,
       require => Package['wget'],
     }
-
-
+    
     exec { 'sed_execute':
-      command => 'sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo',
+      command => 'sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo',
       path    => ['/usr/local/bin', '/usr/bin', '/usr/local/sbin', '/usr/sbin', '/home/vagrant/.local/bin', '/home/vagrant/bin'],
       require => Exec['repo-maven'],
+      user    => root,
     }
 
     package {'apache-maven':
@@ -62,7 +63,6 @@ class deploy (
       require => Exec['sed_execute'],
     }
 
-
     exec { 'maven_deploy':
       command   => "mvn clean scm:checkout install --settings ${settings_path}  deploy",
       cwd       => "${cwd}",
@@ -70,5 +70,5 @@ class deploy (
       logoutput =>  true,
       require   => Package['apache-maven'],
     }
-
+    
 }

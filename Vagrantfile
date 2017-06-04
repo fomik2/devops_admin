@@ -1,80 +1,56 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+
 Vagrant.configure("2") do |config|
   config.vm.box = "centos7_1"
   
   #config.vm.synced_folder ".", "/vagrant", type: "rsync"
 
-#Nexus machine
+
+################ Default virtual machine parameters ##############
+
+   #Install puppet agent on virtual machine
+
+   config.vm.provision "shell", inline: <<-SHELL
+      sudo rpm -ivh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
+      sudo yum -y install puppet-agent
+      sudo /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true
+      sudo /opt/puppetlabs/bin/puppet agent -t
+   SHELL
+
+   # Configure network
+
+   config.vm.provider :libvirt do |vm|
+        vm.memory = 1000
+        vm.cpus = 2
+        vm.management_network_name = "mynetwork1"
+        vm.management_network_address = "192.168.33.0/24"
+        vm.management_network_mode = "route"
+   end
+
+############### Nexus machine parameters #######################
  
   config.vm.define "nexus" do |nexus|
-      nexus.vm.provision "shell", inline: <<-SHELL
-        rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
-        yes | yum -y install puppet
-        hostname nexus
-        echo domain mynode.com >> /etc/resolv.conf
-	yum group install -y "Development Tools"
-	yum install -y nano
-        puppet module install hubspot-nexus --version 1.7.1
-	puppet module install puppetlabs-java --version 1.6.0
-	puppet apply /vagrant/nexus.pp
-      SHELL
-    nexus.vm.network "private_network", ip: "192.168.33.110"
-    nexus.vm.provider :libvirt do |vm|
-      vm.memory = 1000
-      vm.cpus = 2
-    end    
+    nexus.vm.hostname = "nexus"
+    nexus.vm.network "private_network", ip: "192.168.33.101"
+    nexus.vm.provision "shell", inline: <<-SHELL
+        echo 192.168.33.1 puppet.mynode.com puppet > /etc/hosts
+        echo 192.168.33.100 nexus.mynode.com nexus >> /etc/hosts
+        echo NETWORKING=yes > /etc/sysconfig/network
+        echo HOSTNAME=nexus >> /etc/sysconfig/network
+    SHELL
+ end
+
+
+##################### Test Maven machine parameters #############################
+
+  config.vm.define "test" do |t|
+    t.vm.hostname = "test"
+    t.vm.provision "shell", inline: <<-SHELL
+        echo 192.168.33.1 puppet.mynode.com puppet >> /etc/hosts
+	echo 192.168.33.105 test.mynode.com test >> /etc/hosts
+	echo "NETWORKING=yes
+              HOSTNAME=test" > /etc/sysconfig/network
+   SHELL
   end
-
-
-#Maven machine
-
-  config.vm.define "work" do |t|
-    t.vm.provision "shell", inline: <<-SHELL
-        rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
-        yes | yum -y install puppet
-        hostname work
-        echo domain mynode.com >> /etc/resolv.conf
-	yum install -y java-1.8.0-openjdk-devel
-	yum install -y nano
-	yum group install -y "Development Tools"
-	yum install -y curl-devel expat-devel gettext-devel openssl-devel zlib-devel
-	yum install -y git
-	yum install -y wget
-	sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
-	sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
-	sudo yum install -y apache-maven 
-   SHELL
-    t.vm.network "private_network", ip: "192.168.33.100"
-    t.vm.provider :libvirt do |vm|
-        vm.memory = 1000
-        vm.cpus = 2
-    end
- end
-
-#test machine
-
- config.vm.define "test" do |t|
-    t.vm.provision "shell", inline: <<-SHELL
-        rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
-        yes | yum -y install puppet
-        hostname test
-        echo domain mynode.com >> /etc/resolv.conf
-   SHELL
-    t.vm.provision "puppet" do |puppet|
-        puppet.manifest_file = "work.pp"
-	puppet.module_path = "/etc/puppet/modules"
-    end
-
-    t.vm.provider :libvirt do |vm|
-        vm.memory = 1000
-        vm.cpus = 2
-	vm.management_network_name = "mynetwork1"
-	vm.management_network_address = "192.168.33.0/24"
-	vm.management_network_mode = "route"
-    end
- end
-
-
 end
-
