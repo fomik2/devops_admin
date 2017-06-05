@@ -7,14 +7,14 @@
 
 Использование: в главном манифесте /etc/puppetlabs/code/environments/production/manifests/site.p включаем модуль и 
 прописываем параметры: папку rsync, в которой находится pom.xml и путь к settings.xml 
-
+```puppet
 node 'test', 'vagrant_box_work' {
   class{ '::deploy':
     cwd           => '/vagrant',                  # Where Pom.xml is located on VM (RSync folder)
     settings_path => '/vagrant/settings.xml', # Where settings.xml is located on VM (RSync folder)
   }
 }
-
+```
 
 ## Описание
 
