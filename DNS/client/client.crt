@@ -1,0 +1,94 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 2 (0x2)
+    Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C=RU, ST=MO, L=MOSCOW, O=MyCompany, OU=MuOrgUnit, CN=MyCompany CA/name=server/emailAddress=admin@mycompany.ru
+        Validity
+            Not Before: Jun  9 09:43:26 2017 GMT
+            Not After : Jun  7 09:43:26 2027 GMT
+        Subject: C=RU, ST=MO, L=MOSCOW, O=MyCompany, OU=MuOrgUnit, CN=client/name=server/emailAddress=admin@mycompany.ru
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:a3:8f:f4:c8:e1:54:ec:a6:e5:e1:18:c3:77:5a:
+                    23:9a:60:c8:8a:5d:db:59:0c:e8:d9:54:4e:6c:7b:
+                    4b:76:0e:e2:ae:34:17:07:8b:8b:79:88:70:1c:d5:
+                    b1:67:e8:57:2f:f4:04:29:90:ca:36:79:32:32:db:
+                    d0:81:42:35:26:ed:72:f5:42:11:05:4c:83:ca:52:
+                    6c:5c:f4:40:b1:c3:45:36:02:0f:60:c6:7c:2d:c9:
+                    ed:e5:80:c2:9e:39:7a:f4:54:fb:d8:13:d9:43:be:
+                    af:72:2c:2d:9a:cd:a8:41:b6:86:98:33:5a:13:b6:
+                    31:14:b8:f5:60:39:1a:d3:1d:24:fd:dd:86:05:d2:
+                    51:fa:e2:13:6b:8f:27:27:2f:c4:fc:ff:89:f8:33:
+                    dc:be:0f:00:5e:76:4c:a0:7f:77:2b:ce:80:55:d0:
+                    75:56:1e:e0:64:7e:3e:59:7d:4b:0e:48:f5:af:5c:
+                    14:8d:78:d3:ed:ba:06:84:6c:95:4a:f3:92:4b:dc:
+                    87:b8:f5:f1:d7:fe:1c:93:05:07:98:33:0d:d1:ee:
+                    ab:7f:64:40:f1:07:5f:df:89:27:05:b5:f0:45:49:
+                    29:53:f1:01:60:40:dd:00:e7:40:dc:f8:52:c2:b7:
+                    b6:36:42:13:4a:33:37:4b:d0:c1:e5:bf:0e:be:b0:
+                    2d:33
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                Easy-RSA Generated Certificate
+            X509v3 Subject Key Identifier: 
+                18:AA:42:86:D1:FB:0A:E1:05:2B:C8:7E:AF:44:34:F2:32:87:BF:D1
+            X509v3 Authority Key Identifier: 
+                keyid:89:5E:55:3F:87:8B:3F:32:6B:58:42:4C:32:BF:18:57:FA:60:17:63
+                DirName:/C=RU/ST=MO/L=MOSCOW/O=MyCompany/OU=MuOrgUnit/CN=MyCompany CA/name=server/emailAddress=admin@mycompany.ru
+                serial:CD:35:01:47:C2:3A:5A:CC
+
+            X509v3 Extended Key Usage: 
+                TLS Web Client Authentication
+            X509v3 Key Usage: 
+                Digital Signature
+    Signature Algorithm: sha256WithRSAEncryption
+         b2:8b:48:a0:8e:29:46:4d:5d:ad:02:4b:69:d9:2d:49:c9:1c:
+         c5:a7:71:37:67:f1:a1:bb:11:ab:d4:c6:14:c8:52:a3:02:bc:
+         91:ec:9c:1d:67:ed:c7:0c:17:a3:42:bb:84:35:6b:1d:aa:97:
+         b1:17:d7:8e:7e:9a:07:08:44:d2:b6:34:83:22:43:d1:9a:8f:
+         ec:04:c1:aa:b1:6d:fd:29:5d:ab:8b:d8:39:9b:b2:2a:15:72:
+         42:c1:53:90:f7:fc:18:38:3e:b8:c8:d5:dd:4d:62:bc:65:5e:
+         34:ab:a7:14:da:88:c4:2b:27:c7:89:9f:5f:54:41:cc:fa:44:
+         cf:7b:88:5c:a8:c0:11:99:f9:12:68:ec:b2:2b:19:4d:18:89:
+         c4:a0:59:06:1a:c6:81:aa:47:51:61:5a:7f:8d:37:9c:6d:41:
+         b6:a0:02:a0:54:cd:00:34:5b:fe:50:84:75:69:e4:eb:b9:af:
+         64:14:d4:1b:e1:36:7c:55:93:a4:55:41:8e:4a:5c:c8:c6:37:
+         ad:12:a4:fd:90:af:0c:28:db:65:ab:ab:01:ee:40:7c:fb:cd:
+         00:5a:15:41:3a:0b:25:6f:4a:dc:48:b7:f3:4e:ed:25:8e:98:
+         a1:c3:2d:76:a4:78:fc:d5:2e:84:19:fe:bc:7f:ec:eb:d9:59:
+         b1:c9:9e:a1
+-----BEGIN CERTIFICATE-----
+MIIFCjCCA/KgAwIBAgIBAjANBgkqhkiG9w0BAQsFADCBnjELMAkGA1UEBhMCUlUx
+CzAJBgNVBAgTAk1PMQ8wDQYDVQQHEwZNT1NDT1cxEjAQBgNVBAoTCU15Q29tcGFu
+eTESMBAGA1UECxMJTXVPcmdVbml0MRUwEwYDVQQDEwxNeUNvbXBhbnkgQ0ExDzAN
+BgNVBCkTBnNlcnZlcjEhMB8GCSqGSIb3DQEJARYSYWRtaW5AbXljb21wYW55LnJ1
+MB4XDTE3MDYwOTA5NDMyNloXDTI3MDYwNzA5NDMyNlowgZgxCzAJBgNVBAYTAlJV
+MQswCQYDVQQIEwJNTzEPMA0GA1UEBxMGTU9TQ09XMRIwEAYDVQQKEwlNeUNvbXBh
+bnkxEjAQBgNVBAsTCU11T3JnVW5pdDEPMA0GA1UEAxMGY2xpZW50MQ8wDQYDVQQp
+EwZzZXJ2ZXIxITAfBgkqhkiG9w0BCQEWEmFkbWluQG15Y29tcGFueS5ydTCCASIw
+DQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKOP9MjhVOym5eEYw3daI5pgyIpd
+21kM6NlUTmx7S3YO4q40FweLi3mIcBzVsWfoVy/0BCmQyjZ5MjLb0IFCNSbtcvVC
+EQVMg8pSbFz0QLHDRTYCD2DGfC3J7eWAwp45evRU+9gT2UO+r3IsLZrNqEG2hpgz
+WhO2MRS49WA5GtMdJP3dhgXSUfriE2uPJycvxPz/ifgz3L4PAF52TKB/dyvOgFXQ
+dVYe4GR+Pll9Sw5I9a9cFI140+26BoRslUrzkkvch7j18df+HJMFB5gzDdHuq39k
+QPEHX9+JJwW18EVJKVPxAWBA3QDnQNz4UsK3tjZCE0ozN0vQweW/Dr6wLTMCAwEA
+AaOCAVUwggFRMAkGA1UdEwQCMAAwLQYJYIZIAYb4QgENBCAWHkVhc3ktUlNBIEdl
+bmVyYXRlZCBDZXJ0aWZpY2F0ZTAdBgNVHQ4EFgQUGKpChtH7CuEFK8h+r0Q08jKH
+v9EwgdMGA1UdIwSByzCByIAUiV5VP4eLPzJrWEJMMr8YV/pgF2OhgaSkgaEwgZ4x
+CzAJBgNVBAYTAlJVMQswCQYDVQQIEwJNTzEPMA0GA1UEBxMGTU9TQ09XMRIwEAYD
+VQQKEwlNeUNvbXBhbnkxEjAQBgNVBAsTCU11T3JnVW5pdDEVMBMGA1UEAxMMTXlD
+b21wYW55IENBMQ8wDQYDVQQpEwZzZXJ2ZXIxITAfBgkqhkiG9w0BCQEWEmFkbWlu
+QG15Y29tcGFueS5ydYIJAM01AUfCOlrMMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAsG
+A1UdDwQEAwIHgDANBgkqhkiG9w0BAQsFAAOCAQEAsotIoI4pRk1drQJLadktSckc
+xadxN2fxobsRq9TGFMhSowK8keycHWftxwwXo0K7hDVrHaqXsRfXjn6aBwhE0rY0
+gyJD0ZqP7ATBqrFt/Sldq4vYOZuyKhVyQsFTkPf8GDg+uMjV3U1ivGVeNKunFNqI
+xCsnx4mfX1RBzPpEz3uIXKjAEZn5EmjssisZTRiJxKBZBhrGgapHUWFaf403nG1B
+tqACoFTNADRb/lCEdWnk67mvZBTUG+E2fFWTpFVBjkpcyMY3rRKk/ZCvDCjbZaur
+Ae5AfPvNAFoVQToLJW9K3Ei3807tJY6YocMtdqR4/NUuhBn+vH/s69lZscmeoQ==
+-----END CERTIFICATE-----

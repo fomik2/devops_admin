@@ -1,0 +1,31 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos7_1"
+  
+  #config.vm.synced_folder ".", "/vagrant", type: "rsync"
+  
+   config.vm.provider :libvirt do |vm|
+        vm.management_network_name = "mynetwork1"
+        vm.management_network_address = "192.168.33.0/24"
+        vm.management_network_mode = "route"
+   end
+    
+
+ config.vm.define "dnsmaster" do |t|
+    config.vm.provider :libvirt do |vm|
+      vm.memory = 1000
+      vm.cpus = 2
+    end
+    t.vm.hostname = "dnsmaster"    
+    t.vm.provision "shell", inline: "echo nameserver 192.168.33.110 > /etc/resolv.conf"
+  end
+
+ config.vm.define "dnsclient" do |t|
+    t.vm.hostname = "dnsclient"
+    t.vm.provision "shell", inline: "echo nameserver 192.168.33.110 > /etc/resolv.conf"
+  end
+
+end
+ 

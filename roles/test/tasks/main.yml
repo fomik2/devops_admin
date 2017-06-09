@@ -1,0 +1,7 @@
+---
+- name: test
+  template:
+    src: test.j2
+    dest: /home/admin/vagrant_box/test.conf
+
+

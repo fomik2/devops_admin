@@ -1,0 +1,5 @@
+server 192.168.33.110
+update delete nexus.mkdev A
+update add nexus.mkdev. 60 IN A 192.168.33.34
+send
+

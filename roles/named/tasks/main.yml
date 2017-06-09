@@ -1,0 +1,42 @@
+---
+- name: Installing BIND
+  yum:
+    name: bind
+    state: latest
+
+- name: Installs bind-utils
+  yum: 
+    name: bind-utils
+    state: latest
+
+- name: Upload config files to server
+  template: src={{ item.src }} dest={{ item.dest }}
+  with_items:
+    - { src: 'named.conf.j2', dest: '{{ named_directory }}/named.conf' }
+    - { src: 'forward_zone_file.j2', dest: '{{ zone_directory }}/{{ forward_zone_file }}' }
+    - { src: 'reverse_zone_file.j2', dest: '{{ zone_directory }}/{{ reverse_zone_file }}' }
+    - { src: 'ddserver.conf.j2', dest: '/etc/named/ddserver.conf' }
+
+- name: Firewalld rules edit
+  firewalld:
+    zone: public
+    service: dns
+    permanent: true
+    state: enabled
+    immediate: yes
+
+- name: add nameserver to resolv.conf
+  shell: echo "nameserver {{ dns }}" > /etc/resolv.conf
+  tags:
+    - edit_resolv
+
+- name: restart bind
+  service: 
+    name: named
+    enabled: yes
+    state: restarted
+  register: bind_start
+
+- name: Debug bind start
+  debug:
+    var: bind_start
