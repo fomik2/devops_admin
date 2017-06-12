@@ -1,0 +1,27 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos7_1"
+  
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "ssh.yml"
+  end
+ 
+  config.vm.define "dnsmaster" do |t|
+    config.vm.provider :libvirt do |vm|
+       vm.memory = 1000
+       vm.cpus = 2  
+    end  
+  t.vm.hostname = "dnsmaster"
+        
+  end
+
+ config.vm.define "dnsclient" do |t|
+    t.vm.hostname = "dnsclient"
+    
+ end
+
+end
+ 

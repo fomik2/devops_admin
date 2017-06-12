@@ -1,9 +1,0 @@
-{% if zone.vars.bind_zone_hosts|length > 0 %}
-{% for host in zone.vars.bind_zone_hosts %}
-{% if host.ip is string %}
-{{ host.name.ljust(20) }} IN  A      {{ host.ip }}
-{% else %}
-{% for ip in host.ip %}
-{{ host.name.ljust(20) }} IN  A      {{ ip }}
-{% endfor %}
-{% endif %}

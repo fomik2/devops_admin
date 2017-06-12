@@ -1,0 +1,5 @@
+server {{ hostvars['dnsmaster']['ansible_default_ipv4']['address'] }}
+update delete {{ ansible_hostname }}.{{ hostvars['dnsmaster']['zone_name'] }} A
+update add {{ ansible_hostname }}.{{ hostvars['dnsmaster']['zone_name'] }}. 60 IN A {{ ansible_default_ipv4.address }}
+send
+

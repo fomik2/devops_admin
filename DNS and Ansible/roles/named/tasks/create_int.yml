@@ -1,0 +1,12 @@
+---
+
+- name: Add lo10
+  template:
+    src: create_int.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-lo:10
+  tags: addint
+
+- name: Reload networking
+  shell: systemctl restart network
+  ignore_errors: yes
+  tags: addint

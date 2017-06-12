@@ -1,0 +1,31 @@
+---
+- name: NGINX Install
+  include: nginx.yml
+  tags: install_nginx
+
+- name: Install NSUPDATE
+  yum:
+    name: bind-utils
+    state: latest
+
+- name: Copy key to DNSCLIENT
+  copy:
+    src: Kddserver.+157+43236.private
+    dest: /vagrant
+
+- name: Make template update.ns
+  template:
+    src: update.ns.j2
+    dest: /vagrant/update.ns
+
+- name: Run nsupdate
+  command: nsupdate -k /vagrant/Kddserver.+157+43236.private -v /vagrant/update.ns
+
+  
+- lineinfile:
+    path: /etc/resolv.conf
+    line: "nameserver {{ hostvars['dnsmaster']['ansible_default_ipv4']['address'] }}"
+    state: present
+
+- name: OpenVPN Connection to from Hypervisor to dnsmaster 
+  local_action: shell openvpn --config /home/client1-dnsmaster.ovpn

@@ -1,0 +1,10 @@
+---
+# This is hamdler, but it's not work cause ansible bug's.
+- name: restart bind
+  shell: systemctl restart bing
+  register: bind_start
+
+- name: Debug bind start
+  debug: 
+    var: bind_start
+

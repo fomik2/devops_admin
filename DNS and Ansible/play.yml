@@ -1,0 +1,11 @@
+---
+- hosts: dnsmaster
+  become: true
+  roles:
+    - {role: named }
+    - {role: kyl191.openvpn, clients: [client1] }
+
+- hosts: dnsclient 
+  become: true
+  roles: 
+    - {role: dns-client }
