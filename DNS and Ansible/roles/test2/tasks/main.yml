@@ -1,8 +1,0 @@
----
-
-- name: test
-  template:
-    src: update.ns.j2
-    dest: /home/admin/vagrant_box/update.ns
-
-
