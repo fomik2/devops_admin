@@ -47,4 +47,4 @@
 
 - name: OpenVPN Connection to from Hypervisor to dnsmaster
   local_action: shell openvpn --config /home/client1-dnsmaster.ovpn
-  when: route_grep_res == 1 and tun_exist == 1
+  when: route_grep_res.rc == 1 and tun_exist.rc == 1
