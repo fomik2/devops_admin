@@ -33,14 +33,14 @@
 
 - name: Check route table for 10.20.30.0 exist
   connection: local
-  command: route | grep '10.20.30.0'
+  shell: route | grep '10.20.30.0'
   failed_when: false # Do not fail this task if cmd.rc == 1
   changed_when: false
   register: route_grep_res
 
 - name: Check is tun0 exist                   
   connection: local
-  command: ip a | grep 'tun0'
+  shell: ip a | grep 'tun0'
   failed_when: false # Do not fail this task if cmd.rc == 1
   changed_when: false
   register: tun_exist     
