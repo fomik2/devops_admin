@@ -5,6 +5,11 @@
   tags:
     - create_int
   
+- name: Check firewalld and add rules to it
+  include: firewall.yml
+  tags:
+    - firewall
+
 - name: Set facts for other roles (dnsclient)
   set_fact: 
     # Use it update.ns jinja2 template
@@ -28,22 +33,6 @@
     - { src: 'reverse_zone.j2', dest: '/var/named/data/{{ reverse_zone_file }}' }
     - { src: 'ddserver.conf.j2', dest: '/etc/named/ddserver.conf' }
 
-- name: Firewalld edit - add DNS to allow in public zone
-  firewalld:
-    zone: public
-    service: dns
-    permanent: true
-    state: enabled
-    immediate: yes
-
-- name: Firewalld edit - add DNS to allow in internal zone
-  firewalld:
-    zone: internal
-    service: dns
-    permanent: true
-    state: enabled
-    immediate: yes
-
 
 - lineinfile:
     path: /etc/resolv.conf
@@ -52,6 +41,12 @@
 
 
 - name: restart bind
-  shell: systemctl restart named   
+  service:
+    name: named
+    state: restarted   
   register: bind_start
+
+- name: debug restart bind
+  debug:
+    msg: "{{ bind_start }}"
 

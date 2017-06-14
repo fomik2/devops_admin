@@ -4,9 +4,11 @@
   template:
     src: create_int.j2
     dest: /etc/sysconfig/network-scripts/ifcfg-lo:10
-  tags: addint
+  tags: add_int
 
-- name: Reload networking
-  shell: systemctl restart network
-  ignore_errors: yes
+- name: Reload network service
+  service:
+    name: network
+    state: restarted
   tags: addint
+  ignore_errors: true # Cause 'Bringing up interface eth0:  Error: Connection activation failed: No suitable device found for this connection.' error

@@ -1,0 +1,5 @@
+server {{ primary_dns }}
+update delete {{ ansible_hostname }}.{{ zone_name }} A
+update add {{ ansible_hostname }}.{{ zone_name }}. 60 IN A {{ ansible_default_ipv4.address }}
+send
+

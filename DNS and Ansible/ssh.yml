@@ -15,11 +15,5 @@
     set_fact:
       ip: "{{ ansible_default_ipv4.address }}"
       hostname: "{{ ansible_hostname }}"
-  
-  - name: Renew hypervisor hosts file.
-    local_action: shell sed -i '/{{ hostname }}/d' /etc/hosts
-  
-  - name: Renew hypervisor hosts file.
-    local_action: shell echo >> /etc/hosts '{{ ip }} {{ hostname }}'
     
     

@@ -1,0 +1,11 @@
+{% for k, j in myhosts.items() %}
+
+  {% if j.alias is defined %}
+    {{ k }} --- {{ j["ip"] }} --- {{ j["alias"] }} 
+  {% else %}
+    {{ k }} --- {{ j["ip"] }}
+  {%endif%}
+
+{{ ansible_default_ipv4.address }}
+  
+{% endfor %}

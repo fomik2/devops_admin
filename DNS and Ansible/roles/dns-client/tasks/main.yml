@@ -9,23 +9,27 @@
     state: latest
 
 - name: Copy key to DNSCLIENT
-  copy:
+  template:
     src: Kddserver.+157+43236.private
-    dest: /vagrant
+    dest: /vagrant/Kddserver.+157+43236.private
+  register: key_changed
 
 - name: Make template update.ns
   template:
     src: update.ns.j2
     dest: /vagrant/update.ns
+  register: update_ns_changed
+  when: key_changed.changed
 
 - name: Run nsupdate
   command: nsupdate -k /vagrant/Kddserver.+157+43236.private -v /vagrant/update.ns
-
+  when: update_ns_changed.changed
   
 - lineinfile:
     path: /etc/resolv.conf
     line: "nameserver {{ hostvars['dnsmaster']['ansible_default_ipv4']['address'] }}"
     state: present
+
 
 - name: OpenVPN Connection to from Hypervisor to dnsmaster 
   local_action: shell openvpn --config /home/client1-dnsmaster.ovpn
