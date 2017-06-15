@@ -1,0 +1,53 @@
+---
+- name: NGINX Install
+  include: nginx.yml
+  tags: install_nginx
+
+- name: Install NSUPDATE
+  yum:
+    name: bind-utils
+    state: latest
+
+- name: Copy key to DNSCLIENT
+  template:
+    src: "{{ item }}"
+    dest: /vagrant
+  with_fileglob:
+    - Kddserver.+157+43236.*
+  register: key_changed
+
+
+- name: Make template update.ns
+  template:
+    src: update.ns.j2
+    dest: /vagrant/update.ns
+  # when: key_changed.changed # for force start task
+
+- name: Run nsupdate
+  command: nsupdate -k /vagrant/Kddserver.+157+43236.private -v /vagrant/update.ns
+  # when: key_changed.changed # for force start task, uncomment if necessary
+  
+- lineinfile:
+    path: /etc/resolv.conf
+    line: "nameserver {{ hostvars['dnsmaster']['ansible_default_ipv4']['address'] }}"
+    state: present
+
+
+- name: Check route table for 10.20.30.0 exist
+  connection: local
+  shell: route | grep '10.20.30.0'
+  failed_when: false # Do not fail this task if cmd.rc == 1
+  changed_when: false
+  register: route_grep_res
+
+- name: Check is tun0 exist
+  connection: local
+  shell: ip a | grep 'tun0'
+  failed_when: false # Do not fail this task if cmd.rc == 1
+  changed_when: false
+  register: tun_exist
+
+
+- name: OpenVPN Connection to from Hypervisor to dnsmaster 
+  local_action: shell openvpn --config ~/client1-dnsmaster.ovpn
+  when: route_grep_res.rc == 1 and tun_exist.rc == 1

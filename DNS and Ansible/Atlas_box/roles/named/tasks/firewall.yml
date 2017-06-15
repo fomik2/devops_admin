@@ -1,0 +1,32 @@
+---
+- name: Firewalld check if enable do below things
+  shell: which firewall-cmd
+  changed_when: false # Never report as changed
+  register: firewalld_which
+
+- name: Check if Firewalld is active
+  shell: "systemctl status firewalld | grep 'Active: active'"
+  failed_when: false
+  changed_when: false
+  register: firewalld_status
+
+- name: Firewalld edit - add DNS to allow in public zone
+  firewalld:
+    zone: public
+    service: dns
+    permanent: true
+    state: enabled
+    immediate: yes
+  when: firewalld_which.rc == 0 and firewalld_status.rc == 0
+
+
+- name: Firewalld edit - add DNS to allow in internal zone
+  firewalld:
+    zone: internal
+    service: dns
+    permanent: true
+    state: enabled
+    immediate: yes
+  when: firewalld_which.rc == 0 and firewalld_status.rc == 0
+
+

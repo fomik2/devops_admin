@@ -1,0 +1,41 @@
+---
+
+- name: NGINX | Installing NGINX repo rpm
+  yum:
+    name: http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+
+- name: Installs nginx web server
+  yum: 
+    name: nginx
+    state: latest
+
+
+- name: Check FW status
+  shell: which firewall-cmd
+  changed_when: false
+  failed_when: false
+  register: fwcheck_result
+
+- name: Check if firewalld is active
+  shell: "systemctl status firewalld | grep 'Active: active'"
+  changed_when: false
+  failed_when: false
+  register: fwcheck_status
+
+
+- name: Firewalld rules edit
+  firewalld:
+    zone: public
+    service: http
+    permanent: true
+    state: enabled
+    immediate: yes
+  when: fwcheck_result.rc == 0 and fwcheck_status == 0
+
+- name: Start and enable NGINX (cause ansible bug)
+  shell: "{{ item }}"
+  with_items:
+   - systemctl restart nginx
+   - systemctl enable nginx
+ 
+
