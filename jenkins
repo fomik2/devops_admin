@@ -8,6 +8,14 @@ node {
      userRemoteConfigs: [[url: 'https://github.com/SamSaffron/fast_blank.git']]])
    }
    
+   stage ('RSpec Tests') {
+       
+      
+       sh '/usr/local/bin/rspec spec/fast_blank_spec.rb'
+     
+      
+   }
+   
    stage('Build') {
      sh '''
        mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
@@ -25,17 +33,18 @@ node {
   
 
    stage('Deploy') {
-       sh 'cp ~/rpmbuild/RPMS/noarch/ruby-gems-fast_blank-1.0.0-1.noarch.rpm fast_blank.rpm'
+       sh 'cp ~/rpmbuild/RPMS/noarch/*.rpm .'
        nexusArtifactUploader artifacts: [[artifactId: 'fast_blank', 
        classifier: '',
-       file: 'fast_blank.rpm',
+       file: 'ruby-gems-fast_blank-1.0.0-1.noarch.rpm',
        type: 'RPM']], 
        credentialsId: '831211a3-58b1-47fc-8f96-fe4c68b34f95',
        groupId: 'Releases', nexusUrl: 'localhost:9091/nexus', 
        nexusVersion: 'nexus2', protocol: 'http',
-       repository: 'Releases', 
-       version: '1'
-       cleanWs()
+       repository: 'releases', 
+       version: '1.2.0-'+ env.BUILD_ID
+       
+       cleanWs() //Clean workspace
        
    }
 }
