@@ -1,0 +1,41 @@
+node {
+    
+   stage('Get Sources') {
+     
+     checkout([$class: 'GitSCM',
+     branches: [[name: '*/master']],
+     doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [],
+     userRemoteConfigs: [[url: 'https://github.com/SamSaffron/fast_blank.git']]])
+   }
+   
+   stage('Build') {
+     sh '''
+       mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+       echo "%_topdir %(echo $HOME)/rpmbuild
+         %__arch_install_post   /usr/lib/rpm/check-rpaths   /usr/lib/rpm/check-buildroot
+         %_unpackaged_files_terminate_build	0
+         %_binaries_in_noarch_packages_terminate_build   0" > ~/.rpmmacros
+       gem build fast_blank.gemspec
+       mv *.gem ~/rpmbuild/SOURCES
+       /var/lib/jenkins/bin/gem2rpm -t ~/fast_blank.spec.template ~/rpmbuild/SOURCES/*gem > ~/rpmbuild/SPECS/fast_blank.spec
+       cd ~/rpmbuild/SPECS/
+       rpmbuild -bb ~/rpmbuild/SPECS/fast_blank.spec
+     '''
+   }
+  
+
+   stage('Deploy') {
+       sh 'cp ~/rpmbuild/RPMS/noarch/ruby-gems-fast_blank-1.0.0-1.noarch.rpm fast_blank.rpm'
+       nexusArtifactUploader artifacts: [[artifactId: 'fast_blank', 
+       classifier: '',
+       file: 'fast_blank.rpm',
+       type: 'RPM']], 
+       credentialsId: '831211a3-58b1-47fc-8f96-fe4c68b34f95',
+       groupId: 'Releases', nexusUrl: 'localhost:9091/nexus', 
+       nexusVersion: 'nexus2', protocol: 'http',
+       repository: 'Releases', 
+       version: '1'
+       cleanWs()
+       
+   }
+}
