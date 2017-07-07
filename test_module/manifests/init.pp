@@ -9,6 +9,6 @@ $hosts = foreman("hostgroup=devops", "state=all")
 
   file {'/tmp/test':
     ensure  => present, 
-    content => template('/etc/puppetlabs/test.erb'),
+    content => template('test.erb'),
   }
 }
