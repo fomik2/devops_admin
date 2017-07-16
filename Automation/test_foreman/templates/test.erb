@@ -1,4 +1,4 @@
-<% @jenkins.each do |host, info| %>
-  <%= host %> - <%= info['ipaddress'] %>
-<% end %> 
+<% @result.each do |k,v| %>
+  <%= k['name'] %> - <%= k['installed_at'] %> - <%= k['ip']  %>
+<% end %>
 
