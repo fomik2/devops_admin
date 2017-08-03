@@ -2,11 +2,11 @@
   "name": "puppet-test_foreman",
   "version": "0.1.0",
   "author": "puppet",
-  "summary": null,
+  "summary": "Something text here",
   "license": "Apache-2.0",
-  "source": "",
-  "project_page": null,
-  "issues_url": null,
+  "source": "https://github.com/fomik2",
+  "project_page": "https://github.com/fomik2",
+  "issues_url": "https://github.com/fomik2",
   "dependencies": [
     {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
   ],
