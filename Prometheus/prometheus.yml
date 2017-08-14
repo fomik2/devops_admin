@@ -1,0 +1,79 @@
+global:
+  scrape_interval:     15s # By default, scrape targets every 15 seconds.
+  external_labels:
+    monitor: 'codelab-monitor'
+
+rule_files:
+   - /var/lib/prometheus/rules.conf 
+
+alerting:
+  alertmanagers:
+  - static_configs: 
+     - targets: ['localhost:9093']
+
+
+
+scrape_configs:
+  - job_name: 'prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          group: 'test'
+
+  - job_name:       'Test_Enviroment'
+
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.253.253:9100','192.168.253.40:9100','192.168.253.25:9100','192.168.253.26:9100','192.168.253.27:9100']
+        labels:
+          group: 'Nodes_Test_Env'
+
+
+  - job_name:       'Jenkins Monitor'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.253.27:9118']
+        labels:
+          group: 'Jenkins_nodes'
+
+
+
+   #Blackbox_exportet below
+  - job_name: 'http_requests'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]  # Look for a HTTP 200 response.
+    static_configs:
+      - targets:
+        - http://prometheus.io    # Target to probe with http.
+        - https://yandex.ru   # Target to probe with https.
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 192.168.253.27:9115
+
+
+  - job_name: 'ping'
+    metrics_path: /probe
+    params:
+      module: [icmp]  # Look for a HTTP 200 response.
+    static_configs:
+     - targets:
+        - google.com
+        - twitter.com
+        - 8.8.8.8
+        - 192.168.253.40
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__address__]
+        target_label: instance
+      - source_labels: []
+        target_label: __address__
+        replacement: 192.168.253.27:9115  # Blackbox exporter.
+
+

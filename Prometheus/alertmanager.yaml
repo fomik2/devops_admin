@@ -1,0 +1,39 @@
+---
+global:
+  smtp_smarthost: 192.168.3.2:25
+  smtp_from: alertmanager@localhost
+  smtp_auth_username:  vladimir.fomin@soglasie.ru
+  smtp_auth_password: kimof22
+
+templates:
+- "/etc/alertmanager/*.tmpl"
+
+route:
+  group_by:
+  - alertname
+  - cluster
+  - service
+  - instance
+  group_wait: 30s
+  group_interval: 2m
+  repeat_interval: 20m
+  receiver: Admin
+
+receivers:
+  - name: Admin
+    hipchat_configs:
+    - room_id: 4094648
+      auth_token: L6mJ5CM0EqDUZG2Ij3zCrzjA0c7cbcDI7Bh06FS3  
+      message_format: html      
+      message: '{{ template "hipchat.default.message" . }}'
+      notify: true      
+
+inhibit_rules:
+- source_match:
+    severity: critical
+  target_match:
+    severity: warning
+  equal:
+  - alertname
+  - cluster
+  - service

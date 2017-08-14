@@ -1,0 +1,8 @@
+{{ define "hipchat.default.message" }} Тестовый алерт для ХипЧата. Имя алерта: {{.GroupLabels.alertname}}<br/>
+Instance:  {{.GroupLabels.instance }} <br/>
+Service: {{.GroupLabels.service}} <br/>
+Severity:  {{.GroupLabels.severity}}<br/>
+Summary: {{ .CommonAnnotations.summary }}<br/>
+Description: {{ .CommonAnnotations.description }}<br/>
+Instances: {{ range .Alerts }}{{ .Labels.instance }}<br/>{{end}}
+{{end}}
