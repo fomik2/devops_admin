@@ -2,8 +2,8 @@
 global:
   smtp_smarthost: 192.168.3.2:25
   smtp_from: alertmanager@localhost
-  smtp_auth_username:  vladimir.fomin@soglasie.ru
-  smtp_auth_password: kimof22
+  smtp_auth_username: ######
+  smtp_auth_password: ######
 
 templates:
 - "/etc/alertmanager/*.tmpl"
