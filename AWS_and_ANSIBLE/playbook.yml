@@ -1,0 +1,88 @@
+---
+
+- hosts: ec2
+  gather_facts: false
+  remote_user: centos
+  
+  tasks:
+    
+    - name: Check CURL
+      shell: which curl
+      failed_when: false
+      register: curlcheck_result
+
+
+    - name: Install CURL
+      yum:
+        name: curl
+        state: latest
+      when: curlcheck_result.rc != 0
+
+
+    - name: Check is docker installed
+      shell: which docker
+      failed_when: false
+      register: dockercheck            
+
+    - name: Install Docker
+      shell: sudo curl -fsSL https://get.docker.com/ | sh
+      when: dockercheck.rc != 0
+
+    - name: Enable Docker
+      become: true
+      service:
+        name: docker
+        enabled: yes
+        state: reloaded
+      when: dockercheck.rc != 0
+   
+    - name: Usermod docker user
+      shell: sudo usermod -aG docker $(whoami)
+      when: dockercheck.rc != 0
+ 
+   
+    - name: Check is Docker Compose install
+      shell: which docker-compose
+      failed_when: false
+      register: dccheck_result
+
+
+    - name: Install Docker-compose
+      shell: "{{ item }}"
+      with_items:
+        - sudo curl -o /usr/local/bin/docker-compose -L "https://github.com/docker/compose/releases/download/1.15.0/docker-compose-$(uname -s)-$(uname -m)"
+        - sudo chmod +x /usr/local/bin/docker-compose
+      when: dccheck_result.rc != 0
+
+    - name: Check FW status
+      shell: which firewall-cmd
+      failed_when: false
+      register: fwcheck_result
+
+    - name: Firewalld rules edit
+      firewalld:
+        zone: public
+        service: http
+        permanent: true
+        state: enabled
+        immediate: yes
+      when: fwcheck_result.rc == 0
+
+    - name: Copy template docker-compose.yml
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+      with_items:
+        - { src: './nginx1/docker-compose.yml', dest: '~/docker-compose.yml' }
+        - { src: './nginx1/nginx.conf', dest: '~/nginx.conf' }
+      
+    - name: Copy template to app/ 
+      template:
+        src: ./nginx1/index.j2
+        dest: ~/index.html 
+
+    - name: Start docker
+      shell: "{{ item }}"
+      with_items:
+        - cd ~/
+        - docker-compose up -d 
